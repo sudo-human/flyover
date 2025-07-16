@@ -902,8 +902,10 @@ Returns a list of strings, each representing a line."
 
 (defun flyover--disable ()
   "Disable Flycheck/Flymake overlay mode."
-  (flyover--safe-remove-hook 'flycheck-after-syntax-check-hook
-                                      #'flyover--maybe-display-errors-debounced)
+  (when (memq ('flycheck flyover-checkers))
+    (flyover--safe-remove-hook 'flycheck-after-syntax-check-hook
+                               #'flyover--maybe-display-errors-debounced))
+
   (when (memq 'flymake flyover-checkers)
     (flyover--disable-flymake-hooks))
   
